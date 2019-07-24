@@ -16,16 +16,29 @@ chrome_driver = os.getcwd() +"\\chromedriver.exe"
 driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_driver)
 driver.get("http://www.instacart.com/accounts/login.com")
 
-try:
+def login():
     email_box = driver.find_element_by_id("login_with_password_form_email")
     email_box.send_keys("alexanderjbusch@gmail.com")
     password_box = driver.find_element_by_id("login_with_password_form_password")
     password_box.send_keys("password")
-    driver.find_element_by_xpath("//button[@type='submit']").click()
+    driver.find_element_by_xpath("//button[@type='submit']").click() 
+
+# TODO: FIX ERRORS SO I CAN ACTUALLY GET TO THE OPEN CART BUTTON
+try:
+    login()
 except Exception as e:
-    print(e)
-
-
+    driver.find_element_by_xpath("//form//a").click()
+    try:
+        login()
+    except:
+        try:
+            login()
+        except:
+            pass
+    
+time.sleep(5)
+driver.find_element_by_xpath("//a[@aria-label='open cart']").click()      
+"""
 finished = False
 while not finished:
     try:
@@ -69,4 +82,4 @@ while prices == []:
 
 for i in prices:
     print(i.text.splitlines())
-
+"""
